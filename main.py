@@ -8,16 +8,16 @@ from numba import njit, prange
 start_time = time.perf_counter()  # Начало замера
 
 # Параметры
-N = 10
+N = 100
 L = 1.0
 gamma = 0.3
 V0 = 0.2
 f = 0.8
 kappa = 5.2
 alpha = 1.457
-t_max = 100
+t_max = 1000
 dt = 0.01
-Q = 65
+Q = 20
 delta = 0.05
 
 
@@ -183,7 +183,7 @@ def clcZ(x_solution,phi_solution,time):
     return Z_S
 #@njit(parallel= False, fastmath=False)
 
-
+@njit(parallel= False, fastmath=False)
 def s_neighborhood_matrix_np(x: np.ndarray, y: np.ndarray, s: float) -> np.ndarray:
     x_norm = x % 1
     y_norm = y % 1
@@ -223,7 +223,7 @@ def calculate_Z(phi, mask):
     return np.mean(np.exp(1j * phi[mask]))
 
 def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta):
-    fig, axes = plt.subplots(3, 1, figsize=(12, 15), gridspec_kw={'height_ratios': [1, 1, 1]})
+    fig, axes = plt.subplots(4, 1, figsize=(16, 15), gridspec_kw={'height_ratios': [1, 1, 1,1]})
     print("зашли в построение графиков")
 # ------------------------------------------------------------
 # График 1: |Z_S(x, t)|
@@ -233,7 +233,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta)
     Z_S,Z_M = calculateZSAndZM(x_solution.astype(np.float64),phi_solution.astype(np.float64),V.astype(np.float64),time,delta)
 # Отрисовка
     im1 = axes[0].imshow(
-        np.abs(Z_M.real),
+        np.abs(Z_S),
      aspect='auto',
         extent=[time[0], time[-1], 0, L],
     origin='lower',
@@ -243,6 +243,17 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta)
     )
     fig.colorbar(im1, ax=axes[0], label='|Z_S|')
     axes[0].set(title='Local Synchronization', xlabel='Time', ylabel='Position (x)')
+    im1 = axes[3].imshow(
+        np.abs(Z_M),
+     aspect='auto',
+        extent=[time[0], time[-1], 0, L],
+    origin='lower',
+    cmap='viridis',
+    vmin=0,
+    vmax=1
+    )
+    fig.colorbar(im1, ax=axes[3], label='|Z_M|')
+    axes[3].set(title='Local Synchronization', xlabel='Time', ylabel='Position (x)')
 
     # ------------------------------------------------------------
     # График 2: arg R(x_q,t) - Ωt
@@ -310,15 +321,20 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta)
     # Общие настройки
     plt.tight_layout()
     plt.show()
-@njit(parallel=True, fastmath=False)
+#@njit(parallel=True, fastmath=False)
 def compute_R_cluster_numba(x_solution, phi_solution, potential_wells, radius, Q, time_len):
     R_cluster = np.zeros((Q, time_len), dtype=np.complex128)
-    for q in prange(Q):
-        xq = potential_wells[q]
-        for ti in prange(time_len):
-            mask = np.abs(x_solution[ti, :] - xq) <= radius
-            if np.any(mask):
-                R_cluster[q, ti] = np.mean(np.exp(1j * phi_solution[ti, mask]))
+    for ti in prange(time_len):
+        mask = s_neighborhood_matrix_np(potential_wells, x_solution[ti, :], radius)
+
+        for q in prange(Q) :
+            xq = potential_wells[q]
+            #mask = np.abs(x_solution[ti, :] - xq) <= radius
+            #mask  = s_neighborhood_matrix_np(potential_wells,x_solution[ti,:],radius)
+            if np.any(mask[q]):
+                R_cluster[q, ti] = np.mean(np.exp(1j * phi_solution[ti, mask[q]]))
+            #else:
+                #R_cluster[q,t] = 0.0
     return R_cluster
 
 
