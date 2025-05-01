@@ -3,23 +3,24 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import time
 from numba import njit, prange
-
+from datetime import datetime
+import os
 
 start_time = time.perf_counter()  # Начало замера
 
 # Параметры
-N = 100
+N = 10
 L = 1.0
-gamma = 0.3
-V0 = 0.2
+gamma = 1.5
+V0 = 1.0
 f = 0.8
 kappa = 5.2
 alpha = 1.457
-t_max = 1000
+t_max = 100
 dt = 0.01
-Q = 20
+Q =  65
 delta = 0.05
-
+output_dir = f"C:/work/"
 
 
 
@@ -320,8 +321,12 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta)
 
     # Общие настройки
     plt.tight_layout()
+
+    time_str = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # С микросекундами
+    filename = os.path.join(output_dir, f"chart_{time_str}.svg")
+    plt.savefig(filename)
     plt.show()
-#@njit(parallel=True, fastmath=False)
+@njit(parallel=True, fastmath=False)
 def compute_R_cluster_numba(x_solution, phi_solution, potential_wells, radius, Q, time_len):
     R_cluster = np.zeros((Q, time_len), dtype=np.complex128)
     for ti in prange(time_len):
@@ -466,6 +471,9 @@ def plt1():
 
     plt.title(f'Снепшот фаз частиц при $t = {t[t_idx]:.1f}$', fontsize=14)  # Исправлено t_plot на t
     plt.tight_layout()
+    time_str = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # С микросекундами
+    filename = os.path.join(output_dir, f"chart_{time_str}.svg")
+    plt.savefig(filename)
     plt.show()
 
 
@@ -489,7 +497,7 @@ def plt1():
 
     return Z_oscillatory, Z_rotational"""
 
-#plt1()
+plt1()
 
 # Предположим данные уже загружены:
 # x_solution, phi_solution, potential_wells, time, L, Q
