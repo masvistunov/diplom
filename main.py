@@ -300,7 +300,6 @@ def compute_R_cluster_numba(x_solution, phi_solution, potential_wells, radius, Q
 
 import numpy as np
 
-
 def check_monotonicity_2d(data, start_row=0, strict=False):
     """
     Проверяет монотонность для каждого столбца в 2D массиве и находит точку нарушения.
