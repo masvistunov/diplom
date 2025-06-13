@@ -4,7 +4,7 @@ import globalAndLocalgraf
 import anim
 import utils
 import argparse
-'''
+
 # Чтение аргументов командной строки
 parser = argparse.ArgumentParser(description='Solve the ODE system.')
 parser.add_argument('--N', type=int, default=50, help='Number of particles')
@@ -29,22 +29,22 @@ gam = args.gam
 v_0=args.v_0
 stepen = args.stepen
 
-'''
 
-N = 100
+#N = 100
 L = 1.0
 f = 0.8
 kappa = 5.2
 alpha = 1.457
+"""
 t_max = 5000
 dt = 0.01
 delta = 0.05
 gam=0.3
 v_0=0.12
 Q = 5
+"""
 
-
-gamma = gam * Q ** (-1 / 2)
+gamma = gam * Q ** (-3 / 2)
 V0 = v_0 * Q ** (1 / 2)
 output_dir = f"C:/work/"
 #sol = np.load(f'---solution_N{N}_T{t_max}_Q{Q}_gamma{gam}_V0{v_0}.npy')
