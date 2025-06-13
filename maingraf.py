@@ -12,8 +12,8 @@ parser.add_argument('--t_max', type=int, default=2500, help='Maximum simulation 
 parser.add_argument('--Q', type=int, default=5, help='Parameter Q')
 parser.add_argument('--delta', type=float, default=0.05, help='Parameter delta')
 parser.add_argument('--dt',type=float,default=0.01)
-parser.add_argument('--gam',type=float,default=1.5)
-parser.add_argument('--v_0',type=float,default=0.12)
+parser.add_argument('--gamma',type=float,default=1.5)
+parser.add_argument('--v0',type=float,default=0.12)
 parser.add_argument('--stepen',type=int,default=3)
 args = parser.parse_args()
 
@@ -25,8 +25,8 @@ t_max = args.t_max
 Q = args.Q
 delta = args.delta
 dt = args.dt
-gam = args.gam
-v_0=args.v_0
+gam = args.gamma
+v_0=args.v0
 stepen = args.stepen
 
 
