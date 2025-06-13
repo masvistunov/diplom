@@ -123,19 +123,20 @@ def s_neighborhood_matrix_np(x: np.ndarray, y: np.ndarray, s: float) -> np.ndarr
     # Проверяем условие вхождения в окрестность
     return ring_dist < s
 
-def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta):
+def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages):
     x_grid = np.linspace(0,L,1000)
     Z_S = np.zeros((len(x_grid),(len(time))),dtype=np.complex128)
     Z_M = np.zeros((len(x_grid),(len(time))),dtype=np.complex128)
     for t in range (len(time)):
         mask =  s_neighborhood_matrix_np(x_grid,x_sol[t,:],delta)
         for x in range(len(x_grid)):
-            mask_S = (mask[x] & (np.abs(xDot_sol[t,:])<= 0.01))
+            mask_O = (mask[x] & (chages > 100))
             mask_M = (mask[x] & (np.abs(xDot_sol[t,:]) > 0.01))
             #mask_S = ((x_sol[t,:] >= (x - delta)%1) & (x_sol[t,:] <= (x + delta)%1) & (np.abs(xDot_sol[t,:])<= 0.01))
             #mask_M = ((x_sol[t, :] >= (x - delta)%1) & (x_sol[t, :] <= (x + delta)%1) & (np.abs(xDot_sol[t,:]) > 0.01))
-            if np.any(mask_S):
-                Z_S[x,t] = np.mean(np.exp(1j * phi_sol[t,mask_S]))
+            if np.any(mask_O):
+                Z_S[x,t] = np.mean(np.exp(1j * phi_sol[t,mask_O]))
+
             else:
                 Z_S[x,t] = 0.0
             if np.any(mask_M):
@@ -161,18 +162,7 @@ def globalLocalParam(phi,time):
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.legend()
     plt.show()
-def clasification(phi,time):
-    epsilon = 1e-3
-    dot_phi = calculateDotPhi(phi,time)
-    stat_mask = np.zeros((len(dot_phi),len(time)))
-    wavering_mask = np.zeros((len(dot_phi),len(time)))
-    rotating_mask = np.zeros((len(dot_phi),len(time)))
-    delta_phi = np.zeros(len(dot_phi))
-    for t in range(len(time)):
-         delta_phi = np.max(phi[t,:]) - np.min(phi[t,:])
-         wavering_mask[:,t] = np.where((np.abs(np.mean(dot_phi[t])) <= epsilon) & (delta_phi > 0.1))[0]
 
-    return
 def calculate_Z(phi, mask):
     if np.sum(mask) == 0:
         return 0.0  # Если группа пуста
@@ -186,7 +176,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta)
 # ------------------------------------------------------------
    # x_grid = np.linspace(0, L, len(potential_wells))
 #    Z_S = np.zeros((len(x_grid), len(time)))
-    Z_S,Z_M = calculateZSAndZM(x_solution.astype(np.float64),phi_solution.astype(np.float64),V.astype(np.float64),time[0:-2],delta)
+    Z_S,Z_M = calculateZSAndZM(x_solution.astype(np.float64),phi_solution.astype(np.float64),V.astype(np.float64),time[0:-2],delta,chages= count_monotonicity_changes(x_solution))
 # Отрисовка
     im1 = axes[0].imshow(
         np.abs(Z_S),
@@ -395,8 +385,18 @@ def check_monotonicity_2d(data, start_row=0, strict=False):
                         break
 
     return results
-
-
+"""def printGlobalAndLocalOctilationParametrs(changes,x_sol, phi_sol,time_len, potential_wells,radius):
+    mask_x = changes  > 100
+    for ti in prange(time_len):
+        for q in prange(Q) :
+            xq = potential_wells[q]
+            #mask = np.abs(x_solution[ti, :] - xq) <= radius
+            mask  = s_neighborhood_matrix_np(potential_wells,x_solution[ti,:],radius) & mask_x
+            if np.any(mask[q]):
+                R_ost[q, ti] = np.mean(np.exp(1j * phi_solution[ti, mask[q]]))
+            #else:
+                #R_cluster[q,t] = 0.0
+    return R_ost"""
 def count_monotonicity_changes(x_sol):
     """
     Подсчитывает количество изменений монотонности для каждой частицы
@@ -486,10 +486,14 @@ y0 = np.concatenate((x0, v0, phi0))
 t = np.arange(0, t_max+1 , dt)
 
 ts = time.perf_counter()
-sol = odeint(system, y0, t, rtol=1e-6)
+#sol = odeint(system, y0, t, rtol=1e-6)
 te = time.perf_counter()  # Конец замера
 ex = te - ts
 print("интегрирование завершено за:", ex)
+
+sol = np.load(f'solution_N{N}_T{t_max}.npy')
+print("1111")
+
 # Постобработка
 stationary = np.abs(sol[:, N:2 * N]) < 0.01  # маска стационарных частиц
 
@@ -500,7 +504,7 @@ t_idx = -1  # Индекс момента времени
 # ------------------------------------------------------------
 
 changes = count_monotonicity_changes(sol[:,:N])
-
+print(changes)
 # Выборка данных для момента времени t_idx
 x = sol[t_idx, :N] % L  # Координаты частиц
 phases = sol[t_idx, 2 * N:3 * N]  # Фазы частиц
@@ -521,43 +525,6 @@ phi_solution = np.mod(phi_solution + np.pi, 2 * np.pi) - np.pi
 
 
 
-###################
-
-plt.rcParams['animation.embed_limit'] = 60
-
-# Создание фигуры и осей
-fig, ax = plt.subplots(figsize=(8, 6))
-sc = ax.scatter(x_solution[0, :], np.arange(N), c=phi_solution[0, :], cmap='hsv', s=50)
-
-# Настройка осей
-ax.set_xlim(0, L)
-ax.set_ylim(-1, N)
-ax.set_xlabel('Position (x)')
-ax.set_ylabel('Particle Index')
-ax.set_title('Snapshots of Particle Coordinates and Phases Over Time')
-
-# Цветовая шкала
-cb = plt.colorbar(sc, ax=ax)
-cb.set_label('Phase (radians)')
-cb.set_ticks([-np.pi, -np.pi/2, 0, np.pi/2, np.pi])
-cb.ax.set_yticklabels([r'$-\pi$', r'$-\pi/2$', r'$0$', r'$\pi/2$', r'$\pi$'])
-
-# Функция для обновления кадров анимации
-def update(frame):
-    sc.set_offsets(np.c_[x_solution[frame, :], np.arange(N)])
-    sc.set_array(phi_solution[frame,   :])
-    return sc,
-
-# Создание анимации
-print(x_solution.shape[1])
-ani = FuncAnimation(fig, update, frames=int(t_max/2), interval=50, blit=True)
-
-#ani.save('output.mp4', fps=30, dpi=300)  # 5000 кадров → ~2.78 минуты
-ani.save('animation.gif', writer='pillow', fps=30)
-
-# Показать анимацию в отдельном окне
-plt.show()
-#########################
 # Координаты потенциальных ям
 x_wells = np.linspace(0, L, Q, endpoint=False)
 
@@ -565,73 +532,15 @@ x_wells = np.linspace(0, L, Q, endpoint=False)
 # ------------------------------------------------------------
 # 2. Построение графика
 # ------------------------------------------------------------
-def plt1():
-    plt.figure(figsize=(10, 6))
-
-    # Стационарные частицы (синие крестики)
-    plt.scatter(
-        x[stationary],
-        np.angle(np.exp(1j * phases[stationary])) / np.pi,  # Исправлены скобки
-        c='blue', marker='x', s=50, label='Стационарные', alpha=0.7
-    )
-
-    # Движущиеся частицы (красные кружки)
-    plt.scatter(
-        x[moving],
-        np.angle(np.exp(1j * phases[moving])) / np.pi,
-        c='red', s=30, label='Движущиеся', alpha=0.7
-    )
-
-    # Потенциальные ямы (черные маркеры)
-    plt.scatter(
-        x_wells,
-        np.zeros_like(x_wells),
-        c='black', s=40, marker='s', label='Потенциальные ямы'
-    )
-
-    # Настройки графика
-    plt.xlabel('Координата, $x$', fontsize=12)
-    plt.ylabel(r'Фаза, $\varphi_n/\pi$', fontsize=12)  # Добавлен префикс r
-    plt.yticks([-1.0, -0.5, 0.0, 0.5, 1.0],
-               ['-pi', '-pi/2', '0', 'pi/2', 'pi'])
-    plt.ylim(-1.2, 1.2)
-    plt.grid(alpha=0.3)
-    plt.legend(loc='upper right', ncol=3)
-
-    plt.title(f'Снепшот фаз частиц при $t = {t[t_idx-1]:.1f}$', fontsize=14)  # Исправлено t_plot на t
-    plt.tight_layout()
-    time_str = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # С микросекундами
-    filename = os.path.join(output_dir, f"chart_{time_str}.svg")
-    plt.savefig(filename)
-    plt.show()
 
 
-###########
-"""def analyze_results(solution, N, L, delta, bins=1000):
-    x_solution = sol[:,:N] % L  # Координаты частиц
-    phi_solution = sol[:, 2 * N:3 * N]  # Фазы частиц
-    velocity = sol[:, N:2 * N]  # Скорости частиц
 
-    max_velocity = np.max(np.abs(velocity), axis=1)
-    oscillatory_mask = max_velocity < 0.5
-    rotational_mask = ~oscillatory_mask
 
-    x_osc = x_solution[oscillatory_mask]
-    phi_osc = phi_solution[oscillatory_mask]
-    x_rot = x_solution[rotational_mask]
-    phi_rot = phi_solution[rotational_mask]
-
-    Z_oscillatory = compute_local_order_parameter_numba(x_osc, phi_osc, bins, L)
-    Z_rotational = compute_local_order_parameter_numba(x_rot, phi_rot, bins, L)
-
-    return Z_oscillatory, Z_rotational"""
-#clasification(phi_solution,t)
-plt1()
 globalLocalParam(phi_solution,t)
 # Предположим данные уже загружены:
 # x_solution, phi_solution, potential_wells, time, L, Q
 potential_wells = np.linspace(0, L, Q, endpoint=False)
-"""
+
 plot_figure4(
     x_solution=x_solution,
     phi_solution=phi_solution,
@@ -643,7 +552,7 @@ plot_figure4(
     delta = delta
     )
 
-"""
+
 
 #plt.show()
 end_time = time.perf_counter()  # Конец замера
