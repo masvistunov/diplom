@@ -46,7 +46,7 @@ Q = 5
 
 gamma = gam * Q ** (-3 / 2)
 V0 = v_0 * Q ** (1 / 2)
-output_dir = f"C:/work/"
+output_dir = f"./work"
 #sol = np.load(f'---solution_N{N}_T{t_max}_Q{Q}_gamma{gam}_V0{v_0}.npy')
 sol = np.load(f'solution_N{N}_T{t_max}_Q{Q}.npy')
 t = np.arange(0, t_max+1 , dt)
