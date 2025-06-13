@@ -6,17 +6,40 @@ from numba import njit, prange
 import os
 
 # Набор значений Q
-Q_values = [2]
 
-# Параметры, не зависящие от Q
-N = 50
+
+import argparse
+
+# Чтение аргументов командной строки
+parser = argparse.ArgumentParser(description='Solve the ODE system.')
+parser.add_argument('--N', type=int, default=50, help='Number of particles')
+parser.add_argument('--t_max', type=int, default=2500, help='Maximum simulation time')
+parser.add_argument('--Q', type=int, default=5, help='Parameter Q')
+parser.add_argument('--delta', type=float, default=0.05, help='Parameter delta')
+parser.add_argument('--dt',type=float,default=0.01)
+parser.add_argument('--gam',type=float,default=1.5)
+parser.add_argument('--v_0',type=float,default=0.12)
+parser.add_argument('--stepen',type=int,default=3)
+args = parser.parse_args()
+
+
+# Параметры
+
+N = args.N
+t_max = args.t_max
+Q = args.Q
+delta = args.delta
+dt = args.dt
+gam = args.gam
+v_0=args.v_0
+stepen = args.stepen
+
+Q_values = [Q]
+#N = 100
 L = 1.0
 f = 0.8
 kappa = 5.2
 alpha = 1.457
-t_max = 5000
-dt = 0.01
-delta = 0.05
 output_dir = "./"
 
 # Создаем директорию для результатов, если её нет
