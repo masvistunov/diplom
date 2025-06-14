@@ -67,7 +67,7 @@ phi_solution = np.mod(phi_solution + np.pi, 2 * np.pi) - np.pi
 # Координаты потенциальных ям
 x_wells = np.linspace(0, L, Q, endpoint=False)
 chagese =  utils.count_monotonicity_changes(sol[:,:N])
-r = 300
+r = 500
 moving = chagese <=r
 osc = chagese > r
 
