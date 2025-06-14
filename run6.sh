@@ -20,17 +20,18 @@
 #python3 maingraf.py       --N 512  --t_max 5000 --Q 252 --delta 0.1 
 #python3 maingraf.py       --N 512  --t_max 5000 --Q 252 --delta 0.005 
 
+
 #если считаем что -1/2
 python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05
 python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05
 python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05
 python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05
-python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05
-python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05
-python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.1
-python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.1
-python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 40 --delta 0.05
-python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 40 --delta 0.05
+python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.05
+python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.05
+python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.1
+python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.1
+python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 30 --delta 0.05
+python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 30 --delta 0.05
 python3 123.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 60 --delta 0.05
 python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 60 --delta 0.05
 
