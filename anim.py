@@ -26,13 +26,13 @@ def anim(x_solution,phi_solution,L,N,t_max,Q,stepen):
 
     # Функция для обновления кадров анимации
     def update(frame):
-        sc.set_offsets(np.c_[x_solution[frame, :], np.arange(N)])
-        sc.set_array(phi_solution[frame,   :])
+        sc.set_offsets(np.c_[x_solution[int(t_max/2/0.01) + frame, :], np.arange(N)])
+        sc.set_array(phi_solution[int(t_max/2/0.01) + frame,   :])
         return sc,
 
     # Создание анимации
     print(x_solution.shape[1])
-    ani = FuncAnimation(fig, update, frames=int(t_max/2), interval=50, blit=True)
+    ani = FuncAnimation(fig, update, frames=int(t_max), interval=50, blit=True)
 
     #ani.save('output.mp4', fps=30, dpi=300)  # 5000 кадров → ~2.78 минуты
     ani.save(f'animation_N{N}_t{t_max}_Q{Q}_step{stepen}.gif', writer='pillow', fps=30)

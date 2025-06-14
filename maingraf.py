@@ -7,13 +7,13 @@ import argparse
 
 # Чтение аргументов командной строки
 parser = argparse.ArgumentParser(description='Solve the ODE system.')
-parser.add_argument('--N', type=int, default=50, help='Number of particles')
+parser.add_argument('--N', type=int, default=100, help='Number of particles')
 parser.add_argument('--t_max', type=int, default=2500, help='Maximum simulation time')
-parser.add_argument('--Q', type=int, default=3, help='Parameter Q')
+parser.add_argument('--Q', type=int, default=90, help='Parameter Q')
 parser.add_argument('--delta', type=float, default=0.05, help='Parameter delta')
 parser.add_argument('--dt',type=float,default=0.01)
-parser.add_argument('--gamma',type=float,default=1.5)
-parser.add_argument('--v0',type=float,default=0.12)
+parser.add_argument('--gamma',type=float,default=2.5)
+parser.add_argument('--v0',type=float,default=0.05)
 parser.add_argument('--stepen',type=int,default=3)
 args = parser.parse_args()
 
@@ -71,9 +71,9 @@ r = 300
 moving = chagese <=r
 osc = chagese > r
 
-anim.anim(x_solution,phi_solution,L,N,t_max,Q,stepen)
-snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0,stepen)
-#globalAndLocalgraf.plot_figure4(x_solution,phi_solution,v_solution,x_wells,t,L,Q,delta,output_dir,chagese,r,gamma,V0,stepen)
+#anim.anim(x_solution,phi_solution,L,N,t_max,Q,stepen)
+#snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0,stepen)
+globalAndLocalgraf.plot_figure4(x_solution,phi_solution,v_solution,x_wells,t,L,Q,delta,output_dir,chagese,r,gam,v_0,stepen)
 #globalAndLocalgraf.plotglobalParameters(phi_solution,t,v_solution,chagese,output_dir)
 #
 

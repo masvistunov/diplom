@@ -5,7 +5,7 @@ L = 1.0
 
 def calculate_R_cluster(x_solution, phi_solution, potential_wells, L, Q, time):
     radius = 0.5 * L / Q
-    time_len = len(time)-1
+    time_len = len(time)
 
     # Вычисление R_cluster с параллелизацией через numba
     R_cluster = compute_R_cluster_numba(
@@ -16,20 +16,32 @@ def calculate_R_cluster(x_solution, phi_solution, potential_wells, L, Q, time):
     )
 
     # Расчет omega (можно тоже ускорить через numba)
-    """
+
     omega_per_cluster = np.zeros(Q)
     for q in range(Q):
         phi_avg = np.arctan2(np.sin(np.unwrap(np.angle(R_cluster[q, :]))),
                              np.cos(np.unwrap(np.angle(R_cluster[q, :]))))
         omega_per_cluster[q] = np.mean(np.gradient(phi_avg, time))
-"""
 
 
-    #omega = np.mean(omega_per_cluster)
-    omega = np.mean(calculateDotPhi(phi_solution,time))
+
+    omega = np.mean(omega_per_cluster)
+    #omega = np.mean(calculateDotPhi(phi_solution,time))
 
     print("omega = ", omega)
     return R_cluster, omega
+
+def calculate_R_cluster_new(x_solution, phi_solution, potential_wells, L, Q, time):
+    radius = 0.5 * L / Q
+    time_len = len(time)-1
+    R_cluster = compute_R_cluster_numba(
+        x_solution.astype(np.float64),
+        phi_solution.astype(np.float64),
+        potential_wells.astype(np.float64),
+        radius, Q, time_len
+    )
+
+
 @njit(parallel= False, fastmath=False)
 def s_neighborhood_matrix_np(x: np.ndarray, y: np.ndarray, s: float) -> np.ndarray:
     x_norm = x % 1
@@ -50,8 +62,6 @@ def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages,r):
     for t in range (len(time)):
         mask =  s_neighborhood_matrix_np(x_grid,x_sol[t,:],delta)
         if (t == 100000):
-            a = 3
-            print("#$#############################")
             print(mask)
         for x in range(len(x_grid)):
             mask_S= (mask[x] & (np.abs(xDot_sol[t,:]) <= 0.01))
@@ -76,7 +86,7 @@ def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages,r):
             print(t)
     return Z_S,Z_M,Z_O
 def calculateDotPhi(phi,time):
-    dot_phi = np.zeros((len(phi[0]),(len(time)-1)))
+    dot_phi = np.zeros((len(phi[0]),(len(time)-100)))
     dt = time[1] - time[0]
     for t in range(len(time)-1):
         dot_phi[:,t] = (phi[t+1] - phi[t])/dt

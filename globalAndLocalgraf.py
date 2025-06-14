@@ -5,7 +5,7 @@ import os
 import utils
 def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,output_dir,changes,r,gam,v0,stepen):
     fig, axes = plt.subplots(5, 1, figsize=(16, 15), gridspec_kw={'height_ratios': [1, 1, 1,1,1]})
-
+    """
 # ------------------------------------------------------------
 # График 1: |Z_S(x, t)|
 # ------------------------------------------------------------
@@ -48,14 +48,16 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     )
     fig.colorbar(im1, ax=axes[4], label='|Z_O|')
     axes[4].set(title='Local Oscillations Synchronization', xlabel='Time', ylabel='Position (x)')
+    """
 
-      # ------------------------------------------------------------
+
+    # ------------------------------------------------------------
     # График 2: arg R(x_q,t) - Ωt
     # ------------------------------------------------------------
     print("второй")
     R_cluster, omega =  utils.calculate_R_cluster(x_solution, phi_solution, potential_wells, L, Q, time)
     print("2й график")
-    phase_diff = ((np.angle(R_cluster) - omega * time[None, :-1])+np.pi) % (2 * np.pi) - np.pi
+    phase_diff = ((np.angle(R_cluster) - omega * time[None, :])+np.pi) % (2 * np.pi) - np.pi
 
     # Создаем сетку координат ям [0, L) → нормируем на L → [0, 1)
     y_coords = potential_wells / L
@@ -65,7 +67,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
         aspect='auto',
         extent=[time[0], time[-100], 0, 1],  # X: время, Y: [0, 1)
         origin='lower',
-        cmap='inferno',  # Циклическая цветовая карта
+        cmap='hsv',  # Циклическая цветовая карта
         vmin=-np.pi,
         vmax=np.pi,
         interpolation='nearest'
