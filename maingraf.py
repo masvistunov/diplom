@@ -9,7 +9,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Solve the ODE system.')
 parser.add_argument('--N', type=int, default=50, help='Number of particles')
 parser.add_argument('--t_max', type=int, default=2500, help='Maximum simulation time')
-parser.add_argument('--Q', type=int, default=5, help='Parameter Q')
+parser.add_argument('--Q', type=int, default=3, help='Parameter Q')
 parser.add_argument('--delta', type=float, default=0.05, help='Parameter delta')
 parser.add_argument('--dt',type=float,default=0.01)
 parser.add_argument('--gamma',type=float,default=1.5)
@@ -44,11 +44,11 @@ v_0=0.12
 Q = 5
 """
 
-gamma = gam * Q ** (-3 / 2)
+gamma = gam * Q ** (-stepen / 2)
 V0 = v_0 * Q ** (1 / 2)
 output_dir = f"./work"
-#sol = np.load(f'---solution_N{N}_T{t_max}_Q{Q}_gamma{gam}_V0{v_0}.npy')
-sol = np.load(f'solution_N{N}_T{t_max}_Q{Q}.npy')
+sol = np.load(f'solution_N{N}_T{t_max}_Q{Q}_gamma{gam}_v0{v_0}step{stepen}_delta{delta}.npy')
+#sol = np.load(f'solution_N{N}_T{t_max}_Q{Q}.npy')
 t = np.arange(0, t_max+1 , dt)
 t_idx = -1
 x = sol[t_idx, :N] % L  # Координаты частиц
@@ -67,13 +67,13 @@ phi_solution = np.mod(phi_solution + np.pi, 2 * np.pi) - np.pi
 # Координаты потенциальных ям
 x_wells = np.linspace(0, L, Q, endpoint=False)
 chagese =  utils.count_monotonicity_changes(sol[:,:N])
-r = 500
+r = 300
 moving = chagese <=r
 osc = chagese > r
 
-#anim.anim(x_solution,phi_solution,L,N,t_max)
-snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0)
-globalAndLocalgraf.plot_figure4(x_solution,phi_solution,v_solution,x_wells,t,L,Q,delta,output_dir,chagese,r,gamma,V0)
+anim.anim(x_solution,phi_solution,L,N,t_max,Q,stepen)
+snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0,stepen)
+#globalAndLocalgraf.plot_figure4(x_solution,phi_solution,v_solution,x_wells,t,L,Q,delta,output_dir,chagese,r,gamma,V0,stepen)
 #globalAndLocalgraf.plotglobalParameters(phi_solution,t,v_solution,chagese,output_dir)
 #
 

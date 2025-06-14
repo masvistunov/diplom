@@ -4,7 +4,7 @@ from matplotlib import rc
 from matplotlib.animation import FuncAnimation, PillowWriter
 from datetime import datetime
 import os
-def anim(x_solution,phi_solution,L,N,t_max):
+def anim(x_solution,phi_solution,L,N,t_max,Q,stepen):
     plt.rcParams['animation.embed_limit'] = 60
 
     # Создание фигуры и осей
@@ -35,7 +35,7 @@ def anim(x_solution,phi_solution,L,N,t_max):
     ani = FuncAnimation(fig, update, frames=int(t_max/2), interval=50, blit=True)
 
     #ani.save('output.mp4', fps=30, dpi=300)  # 5000 кадров → ~2.78 минуты
-    ani.save('animation.gif', writer='pillow', fps=30)
+    ani.save(f'animation_N{N}_t{t_max}_Q{Q}_step{stepen}.gif', writer='pillow', fps=30)
 
     # Показать анимацию в отдельном окне
-    plt.show()
+    #plt.show()

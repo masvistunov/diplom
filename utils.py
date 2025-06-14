@@ -49,6 +49,10 @@ def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages,r):
     Z_O = np.zeros((len(x_grid), (len(time))), dtype=np.complex128)
     for t in range (len(time)):
         mask =  s_neighborhood_matrix_np(x_grid,x_sol[t,:],delta)
+        if (t == 100000):
+            a = 3
+            print("#$#############################")
+            print(mask)
         for x in range(len(x_grid)):
             mask_S= (mask[x] & (np.abs(xDot_sol[t,:]) <= 0.01))
             mask_M = (mask[x] & (chages < r))
@@ -68,7 +72,7 @@ def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages,r):
                 Z_O[x,t] = np.mean(np.exp(1j * phi_sol[t,mask_O]))
             else:
                 Z_O[x,t] = 0.0
-        if ((t % 1000) == 0):
+        if ((t % 10000) == 0):
             print(t)
     return Z_S,Z_M,Z_O
 def calculateDotPhi(phi,time):

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import os
 import utils
-def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,output_dir,changes,r,gam,v0):
+def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,output_dir,changes,r,gam,v0,stepen):
     fig, axes = plt.subplots(5, 1, figsize=(16, 15), gridspec_kw={'height_ratios': [1, 1, 1,1,1]})
 
 # ------------------------------------------------------------
@@ -120,7 +120,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     #time_str = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # С микросекундами
 
     #filename = os.path.join(output_dir, f"chart_{time_str}.svg")
-    filename = os.path.join(output_dir, f"-cha-N{len(x_solution[0])}-Q{Q}-delta{delta}-gamma{gam}-V0{v0}.svg")
+    filename = os.path.join(output_dir, f"-graf-N{len(x_solution[0])}-Q{Q}-delta{delta}-gamma{gam}-V0{v0}_step{stepen}.svg")
     plt.savefig(filename)
     #plt.show()
 

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 import os
-def snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam,v_0):
+def snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam,v_0,stepen):
     plt.figure(figsize=(10, 6))
 
     # Стационарные частицы (синие крестики)
@@ -46,6 +46,6 @@ def snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam,v_0):
     #plt.title(f'Снепшот фаз частиц при $t = 5000', fontsize=14)  # Исправлено t_plot на t
     plt.tight_layout()
     time_str = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # С микросекундами
-    filename = os.path.join(output_dir, f"chart_{time_str},N{len(x)}_gam{gam}_v{v_0}.svg")
+    filename = os.path.join(output_dir, f"snapshot{time_str},N{len(x)}_gam{gam}_v{v_0}_Q{len(x_wells)}_step{stepen}.svg")
     plt.savefig(filename)
     #plt.show()

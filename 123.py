@@ -51,9 +51,9 @@ for Q in Q_values:
     print(f"Начало расчета для Q = {Q}")
 
     # Параметры, зависящие от Q
-    gamma = gam * Q ** (-3 / 2)
+    gamma = gam * Q ** (-stepen / 2)
     V0 = v_0 * Q ** (1 / 2)
-
+    print(gamma)
 
     @njit(parallel=True, fastmath=False)
     def system(y, t):
@@ -102,7 +102,7 @@ for Q in Q_values:
     sol = odeint(system, y0, t, rtol=1e-6)
 
     # Сохранение результатов
-    filename = os.path.join(output_dir, f'solution_N{N}_T{t_max}_Q{Q}.npy')
+    filename = os.path.join(output_dir, f'solution_N{N}_T{t_max}_Q{Q}_gamma{gam}_v0{v_0}step{stepen}_delta{delta}.npy')
     np.save(filename, sol)
 
     print(f"Q={Q} завершен за {time.perf_counter() - start_time:.2f} сек. Файл: {filename}")
