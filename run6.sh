@@ -47,5 +47,5 @@ python3 maingraf.py     --N 512 --gamma 1.5 --v0 0.12    --t_max 5000 --dt 0.01 
 #python3 maingraf.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 15 --delta 0.1
 #python3 123.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05
 #python3 maingraf.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05
-#python3 123.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.05
-#python3 maingraf.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 20 --delta 0.05
+#python3 123.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 30 --delta 0.05
+#python3 maingraf.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 30 --delta 0.05
