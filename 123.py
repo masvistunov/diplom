@@ -51,8 +51,8 @@ for Q in Q_values:
     print(f"Начало расчета для Q = {Q}")
 
     # Параметры, зависящие от Q
-    gamma = 0.3 * Q ** (-3 / 2)
-    V0 = 0.05 * Q ** (1 / 2)
+    gamma = gam * Q ** (-3 / 2)
+    V0 = v_0 * Q ** (1 / 2)
 
 
     @njit(parallel=True, fastmath=False)
