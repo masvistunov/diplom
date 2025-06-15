@@ -38,24 +38,24 @@
 
 
 #если считаем что -3/2
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 3
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 3
 python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 3
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 3
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 3
 python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 3
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 3
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 3
 python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 3
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 3
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 3
 python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 3
 
 # -1/2
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 1
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 1
 python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05 --stepen 1
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 1
-python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 1
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 1
-python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 1
-python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 1
-python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 1
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 1
+#python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 5 --delta 0.05 --stepen 1
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 1
+#python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 10 --delta 0.05 --stepen 1
+#python3 123.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 1
+#python3 maingraf.py     --N 512 --gamma 2.5 --v0 0.12    --t_max 5000 --dt 0.01 --Q 25 --delta 0.05 --stepen 1
 
 
 #python3 maingraf.py     --N 512 --gamma 1.6 --v0 0.12    --t_max 5000 --dt 0.01 --Q 2 --delta 0.05
