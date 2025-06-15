@@ -71,8 +71,8 @@ r = 300
 moving = chagese <=r
 osc = chagese > r
 
-#anim.anim(x_solution,phi_solution,L,N,t_max,Q,stepen)
-#snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0,stepen)
+anim.anim(x_solution,phi_solution,L,N,t_max,Q,stepen)
+snapshot.snapshot(x,phases,stationary,moving,x_wells,output_dir,t,t_idx,osc,gam, v_0,stepen)
 globalAndLocalgraf.plot_figure4(x_solution,phi_solution,v_solution,x_wells,t,L,Q,delta,output_dir,chagese,r,gam,v_0,stepen)
 #globalAndLocalgraf.plotglobalParameters(phi_solution,t,v_solution,chagese,output_dir)
 #
