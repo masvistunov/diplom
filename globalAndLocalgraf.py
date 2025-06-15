@@ -5,7 +5,7 @@ import os
 import utils
 def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,output_dir,changes,r,gam,v0,stepen):
     fig, axes = plt.subplots(5, 1, figsize=(16, 15), gridspec_kw={'height_ratios': [1, 1, 1,1,1]})
-    """
+
 # ------------------------------------------------------------
 # График 1: |Z_S(x, t)|
 # ------------------------------------------------------------
@@ -48,7 +48,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     )
     fig.colorbar(im1, ax=axes[4], label='|Z_O|')
     axes[4].set(title='Local Oscillations Synchronization', xlabel='Time', ylabel='Position (x)')
-    """
+
 
 
     # ------------------------------------------------------------

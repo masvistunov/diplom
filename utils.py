@@ -1,3 +1,5 @@
+from time import process_time
+
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import njit, prange
@@ -53,17 +55,15 @@ def s_neighborhood_matrix_np(x: np.ndarray, y: np.ndarray, s: float) -> np.ndarr
 
     # Проверяем условие вхождения в окрестность
     return ring_dist < s
-@njit(parallel= False, fastmath=False)
+@njit(parallel= True, fastmath=False)
 def calculateZSAndZM(x_sol,phi_sol,xDot_sol,time,delta, chages,r):
     x_grid = np.linspace(0,L,1000)
     Z_S = np.zeros((len(x_grid),(len(time))),dtype=np.complex128)
     Z_M = np.zeros((len(x_grid),(len(time))),dtype=np.complex128)
     Z_O = np.zeros((len(x_grid), (len(time))), dtype=np.complex128)
-    for t in range (len(time)):
+    for t in prange(len(time)):
         mask =  s_neighborhood_matrix_np(x_grid,x_sol[t,:],delta)
-        if (t == 100000):
-            print(mask)
-        for x in range(len(x_grid)):
+        for x in prange(len(x_grid)):
             mask_S= (mask[x] & (np.abs(xDot_sol[t,:]) <= 0.01))
             mask_M = (mask[x] & (chages < r))
             mask_O = (mask[x] & (chages >= r))
@@ -121,9 +121,12 @@ def compute_R_cluster_numba(x_solution, phi_solution, potential_wells, radius, Q
     R_cluster = np.zeros((Q, time_len), dtype=np.complex128)
     for ti in prange(time_len):
         mask = s_neighborhood_matrix_np(potential_wells, x_solution[ti, :], radius)
-
+        if ((ti % 10000) == 0):
+            print("Rlcast")
+            print(ti)
         for q in prange(Q) :
             xq = potential_wells[q]
+
             #mask = np.abs(x_solution[ti, :] - xq) <= radius
             #mask  = s_neighborhood_matrix_np(potential_wells,x_solution[ti,:],radius)
             if np.any(mask[q]):
