@@ -12,13 +12,13 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
    # x_grid = np.linspace(0, L, len(potential_wells))
 #    Z_S = np.zeros((len(x_grid), len(time)))
     print("первый")
-
+    dt =0.01
     Z_S,Z_M,Z_O = utils.calculateZSAndZM(x_solution.astype(np.float64), phi_solution.astype(np.float64), V.astype(np.float64), time[0:-1], delta, chages= changes,r=r)
 # Отрисовка
     im1 = axes[0].imshow(
-        np.abs(Z_S),
+        np.abs(Z_S)[:,int(1500/dt):-1],
      aspect='auto',
-        extent=[time[0], time[-1], 0, L],
+        extent=[time[int(1500/dt)], time[-1], 0, L],
     origin='lower',
     cmap='viridis',
     vmin=0,
@@ -27,9 +27,9 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     fig.colorbar(im1, ax=axes[0], label='|Z_S|')
     axes[0].set(title='Local Static Synchronization', xlabel='Time', ylabel='Position (x)')
     im1 = axes[3].imshow(
-        np.abs(Z_M),
+        np.abs(Z_M)[:,int(1500/dt):-1],
      aspect='auto',
-        extent=[time[0], time[-1], 0, L],
+        extent=[time[int(1500/dt)], time[-1], 0, L],
     origin='lower',
     cmap='viridis',
     vmin=0,
@@ -38,7 +38,7 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     fig.colorbar(im1, ax=axes[3], label='|Z_M|')
     axes[3].set(title='Local Moving  Synchronization', xlabel='Time', ylabel='Position (x)')
     im1 = axes[4].imshow(
-        np.abs(Z_O),
+        np.abs(Z_O)[:,int(1500/dt):-1],
         aspect='auto',
         extent=[time[0], time[-1], 0, L],
         origin='lower',
@@ -63,9 +63,9 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     y_coords = potential_wells / L
     # Тепловая карта
     im = axes[1].imshow(
-        phase_diff,
+        phase_diff[:,int(1500/dt):-1],
         aspect='auto',
-        extent=[time[0], time[-100], 0, 1],  # X: время, Y: [0, 1)
+        extent=[time[int(1500/dt)], time[-100], 0, 1],  # X: время, Y: [0, 1)
         origin='lower',
         cmap='hsv',  # Циклическая цветовая карта
         vmin=-np.pi,
@@ -94,9 +94,9 @@ def plot_figure4(x_solution, phi_solution,V, potential_wells, time, L, Q, delta,
     print("3й")
 
     im = axes[2].imshow(
-        modR,
+        modR[:,int(1500/dt):-1],
         aspect='auto',
-        extent=[time[0], time[-1], 0, L],  # X: время, Y: координаты [0, L)
+        extent=[time[int(1500/dt)], time[-1], 0, L],  # X: время, Y: координаты [0, L)
         origin='lower',
         cmap='plasma',  # Циклическая цветовая карта
         vmin=0,
